@@ -4,13 +4,14 @@ import Employe from '../models/Employe';
 
 // Fonction pour créer un nouvel employé
 const createEmploye = (req: Request, res: Response, next: NextFunction) => {
-    const { nom, prenom } = req.body;
+    const { nom, prenom, dateNaissance } = req.body;
 
     // Création d'une nouvelle instance d'Employe avec les données fournies
     const employe = new Employe({
         _id: new mongoose.Types.ObjectId(),
         nom,
-        prenom
+        prenom,
+        dateNaissance
     });
 
     return employe
@@ -63,9 +64,6 @@ const deleteEmploye = (req: Request, res: Response, next: NextFunction) => {
         .then((employe) => (employe ? res.status(201).json({ employe, message: 'Employé supprimé' }) : res.status(404).json({ message: 'Employé non trouvé' }))) // Réponse avec un message indiquant la suppression ou une erreur
         .catch((error) => res.status(500).json({ error })); // Gestion des erreurs
 };
-
-export default { createEmploye, readEmploye, readAllEmploye, updateEmploye, deleteEmploye };
-
 // Fonction pour calculer l'âge d'un employé
 const calculerAge = (req: Request, res: Response, next: NextFunction) => {
     const employeId = req.params.employeId; // Récupération de l'identifiant de l'employé depuis les paramètres de la requête
@@ -80,3 +78,6 @@ const calculerAge = (req: Request, res: Response, next: NextFunction) => {
         })
         .catch((error) => res.status(500).json({ error })); // Gestion des erreurs
 };
+
+// Export des fonctions du contrôleur
+export default { createEmploye, readEmploye, readAllEmploye, updateEmploye, deleteEmploye, calculerAge };
