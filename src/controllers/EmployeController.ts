@@ -65,3 +65,18 @@ const deleteEmploye = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export default { createEmploye, readEmploye, readAllEmploye, updateEmploye, deleteEmploye };
+
+// Fonction pour calculer l'âge d'un employé
+const calculerAge = (req: Request, res: Response, next: NextFunction) => {
+    const employeId = req.params.employeId; // Récupération de l'identifiant de l'employé depuis les paramètres de la requête
+    return Employe.findById(employeId) // Recherche de l'employé correspondant dans la base de données
+        .then((employe) => {
+            if (employe) {
+                const age = employe.calculerAge(); // Appel de la méthode pour calculer l'âge de l'employé
+                return res.status(200).json({ age }); // Réponse avec l'âge de l'employé
+            } else {
+                return res.status(404).json({ message: 'Employé non trouvé' }); // Employé non trouvé
+            }
+        })
+        .catch((error) => res.status(500).json({ error })); // Gestion des erreurs
+};

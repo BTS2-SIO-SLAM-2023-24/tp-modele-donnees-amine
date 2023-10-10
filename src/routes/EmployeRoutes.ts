@@ -12,5 +12,6 @@ router.get('/:employeId', EmployeController.readEmploye);
 router.put('/:employeId', EmployeController.updateEmploye);
 router.patch('/:employeId',  EmployeController.updateEmploye);
 router.delete('/:employeId', EmployeController.deleteEmploye);
+router.get('/:employeId/age', EmployeController.calculerAge);
 
 export default router; // Export du routeur pour être utilisé dans l'application principale
