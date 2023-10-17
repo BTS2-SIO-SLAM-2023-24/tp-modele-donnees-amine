@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client App</title>
+</head>
+<body>
+    <h1>Client Application</h1>
+
+
+    <h2>Créer un employé</h2>
+    <form id="employeForm">
+        <label for="nom">Nom:</label>
+        <input type="text" id="nom" name="nom" required><br>
+        <label for= "prenom">Prénom:</label>
+        <input type="text" id="prenom" name="prenom" required><br>
+        <label for="dateNaissance">Date de naissance:</label>
+        <input type="date" id="dateNaissance" name="dateNaissance" required><br>
+
+
+        <label for="animal">Animal:</label>
+        <select id="animal" name="animal">
+            <!-- Remplissez cette liste avec les animaux disponibles depuis l'API -->
+        </select>
+
+
+        <button type="submit">Créer un employé</button>
+    </form>
