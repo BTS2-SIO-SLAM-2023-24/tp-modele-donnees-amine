@@ -5,9 +5,14 @@ import mongoose from 'mongoose';
 import { config } from './config/config';
 import Logging from './library/Logging';
 import employeRoutes from './routes/EmployeRoutes';
+import animalRoutes from './routes/AnimalsRoutes';
+import especeRoutes from './routes/EspeceRoutes';
 
+mongoose.set('strictQuery', true);
 // Création d'une instance d'Express
 const router = express();
+
+// Création d'une instance d'Express
 
 /** Connexion à la base de données MongoDB */
 mongoose
@@ -55,6 +60,8 @@ const StartServer = () => {
     // Définition des routes de l'API
 
     router.use('/employes', employeRoutes); // Les routes liées aux employes sont définies dans employeRoutes
+    router.use('/animals', animalRoutes); // Les routes liées aux animaux
+    router.use('/especes', especeRoutes); // Les routes liées aux espèces
 
     // une route simple pour vérifier que le serveur fonctionne
     router.get('/ping', (req, res, next) => res.status(200).json({ message: 'Bienvenue dans ton API' }));
@@ -74,4 +81,4 @@ const StartServer = () => {
 
     // Création du serveur HTTP en utilisant Express et écoute sur le port configuré
     http.createServer(router).listen(config.server.port, () => Logging.info(`Le serveur est en cours d'exécution sur le port ${config.server.port}`));
-}   
+};

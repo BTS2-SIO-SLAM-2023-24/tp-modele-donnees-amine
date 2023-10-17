@@ -1,6 +1,7 @@
+// middleware/Joi.ts
 import Joi, { ObjectSchema } from 'joi';
 import { NextFunction, Request, Response } from 'express';
-import { EmployeModel } from '../models/Employe';   
+
 import Logging from '../library/Logging';
 
 // Cette fonction middleware prend un schéma Joi en tant que paramètre
@@ -25,20 +26,43 @@ export const ValidateJoi = (schema: ObjectSchema) => {
     };
 };
 
-// Définition de schémas de validation pour les données d'employé
+// Définition de schémas de validation pour les données
 // Ces schémas sont utilisés dans le middleware ci-dessus pour valider les requêtes.
 
 export const Schemas = {
-    employe: {
-        create: Joi.object<IEmploye>({
-            // Schéma de création d'un employé
+    Employe: {
+        create: Joi.object({
             nom: Joi.string().required(),
-            prenom: Joi.string().required()
+            prenom: Joi.string().required(),
+            dateNaissance: Joi.date().required(),
+            LesAnimaux: Joi.array().items(Joi.string().required())
         }),
-        update: Joi.object<IEmploye>({
-            // Schéma de mise à jour d'un employé
+
+        update: Joi.object({
+            nom: Joi.string(),
+            prenom: Joi.string(),
+            dateNaissance: Joi.date(),
+            LesAnimaux: Joi.array().items(Joi.string().required())
+        })
+    },
+
+    Animal: {
+        create: Joi.object({
             nom: Joi.string().required(),
-            prenom: Joi.string().required()
+            espece: Joi.string().required()
+        }),
+        update: Joi.object({
+            nom: Joi.string(),
+            espece: Joi.string()
+        })
+    },
+
+    Espece: {
+        create: Joi.object({
+            nom: Joi.string().required()
+        }),
+        update: Joi.object({
+            nom: Joi.string()
         })
     }
 };

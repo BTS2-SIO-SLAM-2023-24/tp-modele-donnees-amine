@@ -1,3 +1,4 @@
+// controllers/EmployeController.ts
 import { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import Employe from '../models/Employe';
@@ -64,6 +65,7 @@ const deleteEmploye = (req: Request, res: Response, next: NextFunction) => {
         .then((employe) => (employe ? res.status(201).json({ employe, message: 'Employé supprimé' }) : res.status(404).json({ message: 'Employé non trouvé' }))) // Réponse avec un message indiquant la suppression ou une erreur
         .catch((error) => res.status(500).json({ error })); // Gestion des erreurs
 };
+
 // Fonction pour calculer l'âge d'un employé
 const calculerAge = (req: Request, res: Response, next: NextFunction) => {
     const employeId = req.params.employeId; // Récupération de l'identifiant de l'employé depuis les paramètres de la requête
@@ -79,5 +81,48 @@ const calculerAge = (req: Request, res: Response, next: NextFunction) => {
         .catch((error) => res.status(500).json({ error })); // Gestion des erreurs
 };
 
+// Fonction pour retirer un animal d'un employé
+const retirerAnimal = (req: Request, res: Response, next: NextFunction) => {
+    const employeId = req.params.employeId; // Récupération de l'identifiant de l'employé depuis les paramètres de la requête
+    const animalId = req.params.animalId; // Récupération de l'identifiant de l'animal depuis les paramètres de la requête
+    const animalObjectId = new mongoose.Types.ObjectId(animalId); // Création d'un objet ObjectId à partir de l'identifiant de l'animal
+    return Employe.findById(employeId) // Recherche de l'employé correspondant dans la base de données
+        .then((employe) => {
+            if (employe) {
+                // Appel de la méthode pour retirer l'animal de l'employé
+                employe.retirerAnimal(animalObjectId);
+
+                return employe
+                    .save() // Sauvegarde de l'employé modifié dans la base de données
+                    .then((employe) => res.status(201).json({ employe })) // Réponse avec les détails de l'employé mis à jour
+                    .catch((error) => res.status(500).json({ error })); // Gestion des erreurs
+            } else {
+                return res.status(404).json({ message: 'Employé non trouvé' }); // Employé non trouvé
+            }
+        })
+        .catch((error) => res.status(500).json({ error })); // Gestion des erreurs
+};
+
+// Fonction pour affecter un animal à un employé
+const affecterAnimal = (req: Request, res: Response, next: NextFunction) => {
+    const employeId = req.params.employeId; // Récupération de l'identifiant de l'employé depuis les paramètres de la requête
+    const animalId = req.params.animalId; // Récupération de l'identifiant de l'animal depuis les paramètres de la requête
+    const animalObjectId = new mongoose.Types.ObjectId(animalId); // Création d'un objet ObjectId à partir de l'identifiant de l'animal
+    return Employe.findById(employeId) // Recherche de l'employé correspondant dans la base de données
+        .then((employe) => {
+            if (employe) {
+                // Appel de la méthode pour affecter l'animal à l'employé
+                employe.affecterAnimal(animalObjectId);
+                return employe
+                    .save() // Sauvegarde de l'employé modifié dans la base de données
+                    .then((employe) => res.status(201).json({ employe })) // Réponse avec les détails de l'employé mis à jour
+                    .catch((error) => res.status(500).json({ error })); // Gestion des erreurs
+            } else {
+                return res.status(404).json({ message: 'Employé non trouvé' }); // Employé non trouvé
+            }
+        })
+        .catch((error) => res.status(500).json({ error })); // Gestion des erreurs
+};
+
 // Export des fonctions du contrôleur
-export default { createEmploye, readEmploye, readAllEmploye, updateEmploye, deleteEmploye, calculerAge };
+export default { createEmploye, readEmploye, readAllEmploye, updateEmploye, deleteEmploye, affecterAnimal, retirerAnimal, calculerAge };
